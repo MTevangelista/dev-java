@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
     lê n1 igual a 3 e n2 a 17, e mostra n1 igual a 17 e n2 a 3.
 */
 
-public class Exercicio01 {
+public class Ex01 {
     public static void main(String[] args) {
         int num1, num2;
         
