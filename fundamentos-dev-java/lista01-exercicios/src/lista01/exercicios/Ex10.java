@@ -17,7 +17,7 @@ public class Ex10 {
         altura = Double.parseDouble(entraValor("Entre com o valor da altura: "));
         
         volume = PI * (raio * raio) * altura;
-        System.out.println("A o volume de uma caixa de água cilíndrica é: "+volume+" m3");
+        System.out.println("O volume de uma caixa de água cilíndrica é: "+volume+" m3");
     }
     
     public static String entraValor(String msg) {
