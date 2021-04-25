@@ -3,20 +3,23 @@ package lista02.exercicios;
 import java.util.Scanner;
 
 /*
-    03) Faça um algoritmo que leia dois números e mostre o maior número.
+    04) Faça um algoritmo que leia três números e mostre o maior número.
 */
 
-public class Ex03 {
+public class Ex04 {
     public static void main(String[] args) {
-        double num1, num2;
+        double num1, num2, num3;
         
         num1 = Double.parseDouble(entraValor("Entre com o primeiro número: "));
         num2 = Double.parseDouble(entraValor("Entre com o segundo número: "));
+        num3 = Double.parseDouble(entraValor("Entre com o terceiro número: "));
     
-        if (num1 > num2) {
-            System.out.println("Número "+num1+" maior que "+num2);
-        } else if (num2 > num1) {
-            System.out.println("Número "+num2+" maior que "+num1);
+        if ((num1 > num2) && (num1 > num3)) {
+            System.out.println("Número "+num1+" é o maior");
+        } else if ((num2 > num1) && (num2 > num3)) {
+            System.out.println("Número "+num2+" é o maior");
+        } else if ((num3 > num1) && (num3 > num2)) {
+            System.out.println("Número "+num3+" é o maior");
         } else {
             System.out.println("Números iguais");
         }
