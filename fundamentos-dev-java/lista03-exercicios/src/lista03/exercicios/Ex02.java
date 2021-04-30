@@ -1,7 +1,5 @@
 package lista03.exercicios;
 
-import java.util.Scanner;
-
 /*
     02) Faça um algoritmo que calcule a soma dos números de 1 a 100.
 */
