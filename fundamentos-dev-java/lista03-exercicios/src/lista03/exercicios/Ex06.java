@@ -28,6 +28,7 @@ public class Ex06 {
         for (int i = 2; i < num-1; i++) {
             if ((num % i) == 0) {
                 primo  = false;
+                break;
             }
         }
         return primo;
