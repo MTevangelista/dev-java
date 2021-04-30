@@ -7,7 +7,7 @@ public class Teste {
         System.out.println("Salário líquido: "+vendedor.salarioLiquido());
         
         Funcionario estagiario = new Estagiario("Souza", 1600);
-        System.out.println("Nome do vendedor: "+estagiario.nome);
+        System.out.println("Nome do estagiário: "+estagiario.nome);
         System.out.println("Salário líquido: "+estagiario.salarioBruto);
     }
 }

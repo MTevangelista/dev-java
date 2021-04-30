@@ -1,20 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package exercicio2;
+package aula03.exercicio02;
 
-/**
- *
- * @author ericson
- */
 public class Carro {
     private String modelo;
-    
     private Motor motor;
     
-    // Método construtor
     public Carro(String modelo, float cilindrada){
         this.modelo = modelo;
         motor = new Motor(cilindrada);
