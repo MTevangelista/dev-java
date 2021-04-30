@@ -3,7 +3,7 @@ package lista03.exercicios;
 import java.util.Scanner;
 
 /*
-    06) Faça um algoritmo que leia uma sequência de números terminada em zero e mostre
+    11) Faça um algoritmo que leia uma sequência de números terminada em zero e mostre
     para cada número lido se ele é primo ou não.
 */
 
