@@ -22,24 +22,12 @@ public class FundamentosDevTp1 {
     }
     
     private static void start(int option, String[] names, double[] av1, double[] av2) {
-        int studentCode;
-        double grade1, grade2;
-        String name;
-        
         switch (option) {
             case 1:
-                if (hasFreePosition(names)) {
-                    name = readStringValue(Constants.ENTER_YOUR_NAME);
-                    grade1 = readDoubleValue(Constants.ENTER_YOUR_FIRST_GRADE);
-                    grade2 = readDoubleValue(Constants.ENTER_YOUR_SECOND_GRADE);
-                    addStudentInformation(names, av1, av2, name, grade1, grade2);
-                } else {
-                    showMessage(Constants.ERR, Constants.ALL_POSITIONS_ARE_OCCUPIED);
-                }
+                addStudentInformation(names, av1, av2);
                 break;
             case 2:
-                studentCode = readIntValue(Constants.ENTER_STUDENT_CODE);
-                searchStudent(names, av1, av2, studentCode);
+                searchStudent(names, av1, av2);
                 break;
             case 3: 
                 searchAllStudents(names, av1, av2);
@@ -53,40 +41,50 @@ public class FundamentosDevTp1 {
         return counter != names.length;
     }
     
-    private static void addStudentInformation(String[] names, double[] av1, 
-            double[] av2, String name, double grade1, double grade2) {
-        names[counter] = name;
-        av1[counter] = grade1;
-        av2[counter] = grade2;
-        showMessage(Constants.OUT, Constants.YOUR_CODE_IS + counter);
-        counter++;
+    private static void addStudentInformation(String[] names, double[] av1, double[] av2) {
+        double grade1, grade2;
+        String name;
+        
+        if (hasFreePosition(names)) {
+            name = readStringValue(Constants.ENTER_YOUR_NAME);
+            grade1 = readDoubleValue(Constants.ENTER_YOUR_FIRST_GRADE);
+            grade2 = readDoubleValue(Constants.ENTER_YOUR_SECOND_GRADE);
+            names[counter] = name;
+            av1[counter] = grade1;
+            av2[counter] = grade2;
+            showMessage(Constants.OUT, Constants.YOUR_CODE_IS + counter);
+            counter++;
+        } else {
+            showMessage(Constants.ERR, Constants.ALL_POSITIONS_ARE_OCCUPIED);
+        }
     }
     
-    private static void searchStudent(String[] names, double[] av1, double[] av2, int studentCode) {
-        String result, status;
-        double average;
+    private static void searchStudent(String[] names, double[] av1, double[] av2) {
+        int studentCode;
         
+        studentCode = readIntValue(Constants.ENTER_STUDENT_CODE);        
         for (int i = 0; i < counter; i++) {
             if (i == studentCode) {
-                average = getStudentAverage(av1[studentCode], av2[studentCode]);
-                status = getStudentStatus(average);
-                result = "Nome: "+names[studentCode]+"\n"+"AV1: "+av1[studentCode]+"\n"+"AV2: "+av2[studentCode]+"\n"+"Média: "+average+"\n"+"Status: "+status;
-                showMessage(Constants.OUT, result);
+                showStudent(names, av1, av2, i);
                 break;
             }
         }
     }
     
     private static void searchAllStudents(String[] names, double[] av1, double[] av2) {
-        String result, status;
-        double average;
-        
         for (int i = 0; i < counter; i++) {
-            average = getStudentAverage(av1[i], av2[i]);
-            status = getStudentStatus(average);
-            result = "Nome: "+names[i]+"\n"+"AV1: "+av1[i]+"\n"+"AV2: "+av2[i]+"\n"+"Média: "+average+"\n"+"Status: "+status+"\n";
-            showMessage(Constants.OUT, result);
+            showStudent(names, av1, av2, i);
         }
+    }
+    
+    private static void showStudent(String[] names, double[] av1, double[] av2, int index) {
+        double average;
+        String result, status;
+        
+        average = getStudentAverage(av1[index], av2[index]);
+        status = getStudentStatus(average);
+        result = "Nome: "+names[index]+"\n"+"AV1: "+av1[index]+"\n"+"AV2: "+av2[index]+"\n"+"Média: "+average+"\n"+"Status: "+status+"\n";
+        showMessage(Constants.OUT, result);
     }
     
     private static int menu() {
@@ -106,8 +104,8 @@ public class FundamentosDevTp1 {
         return value;
     }
     
-    private static Double readDoubleValue(String msg) {
-        Double value;
+    private static double readDoubleValue(String msg) {
+        double value;
         Scanner scanner = new Scanner(System.in);
         
         showMessage(Constants.OUT, msg);
@@ -120,7 +118,7 @@ public class FundamentosDevTp1 {
         return value;
     }
     
-    private static Double getStudentAverage(double grade1, double grade2) {
+    private static double getStudentAverage(double grade1, double grade2) {
         return (grade1 + grade2) / 2;
     }
     

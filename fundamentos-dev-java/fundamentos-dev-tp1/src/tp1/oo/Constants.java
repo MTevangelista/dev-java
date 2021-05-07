@@ -1,4 +1,4 @@
-package constants;
+package tp1.oo;
 
 public class Constants {
     // Message Types   
@@ -32,3 +32,4 @@ public class Constants {
     public static final String FINAL_EXAM = "Prova final";
     public static final String REPROVED = "Reprovado";
 }
+
