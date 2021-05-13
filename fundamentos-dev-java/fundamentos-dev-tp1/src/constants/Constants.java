@@ -1,6 +1,7 @@
 package constants;
 
 public class Constants {
+    
     // Message Types   
     public static final String OUT = "out";
     public static final String ERR = "err";
