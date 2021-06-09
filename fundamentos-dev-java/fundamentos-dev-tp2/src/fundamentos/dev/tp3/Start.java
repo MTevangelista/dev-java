@@ -1,4 +1,4 @@
-package fundamentos.dev.tp2;
+package fundamentos.dev.tp3;
 
 import constants.Constants;
 import enums.PeopleTypes;

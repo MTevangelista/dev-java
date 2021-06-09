@@ -1,4 +1,4 @@
-package fundamentos.dev.tp2;
+package fundamentos.dev.tp3;
 
 public class Teacher extends People{
     private String subject;

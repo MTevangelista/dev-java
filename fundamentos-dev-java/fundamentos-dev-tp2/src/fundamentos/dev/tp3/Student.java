@@ -1,4 +1,4 @@
-package fundamentos.dev.tp2;
+package fundamentos.dev.tp3;
 
 import constants.Constants;
 
@@ -54,6 +54,16 @@ public class Student extends People {
     
     @Override
     public String toString() {
-        return super.toString() + "AV1: "+firstGrade+"\n"+"AV2: "+secondGrade+"\n"+"\n"+"Média: "+getStudentAverage()+"\n"+"Status: "+getStudentStatus()+"\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append("AV1: ").append(firstGrade).append("\n");
+        sb.append("AV2: ").append(secondGrade).append("\n");
+        sb.append("Média: ").append(getStudentAverage()).append("\n");
+        sb.append("Status: ").append(getStudentStatus()).append("\n");
+        return super.toString() + sb.toString();
     }
+    
+//    @Override
+//    public String toString() {
+//        return super.toString() + "AV1: "+firstGrade+"\n"+"AV2: "+secondGrade+"\n"+"\n"+"Média: "+getStudentAverage()+"\n"+"Status: "+getStudentStatus()+"\n";
+//    }
 }  

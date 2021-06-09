@@ -1,4 +1,4 @@
-package fundamentos.dev.tp2;
+package fundamentos.dev.tp3;
 
 public class People {
     private String name;
@@ -25,9 +25,9 @@ public class People {
         return people; 
     }
     
-    @Override
-    public String toString() {
-        return "Nome: "+name+"\n";
-    }
-    
+//    @Override;;;;;;
+//    public String toString() {
+//        return "Nome: "+name+"\n";
+//    }
+//    
 }
