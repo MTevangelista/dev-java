@@ -25,9 +25,10 @@ public class People {
         return people; 
     }
     
-//    @Override;;;;;;
-//    public String toString() {
-//        return "Nome: "+name+"\n";
-//    }
-//    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Nome: ").append(name).append("\n");
+        return sb.toString();
+    }
 }

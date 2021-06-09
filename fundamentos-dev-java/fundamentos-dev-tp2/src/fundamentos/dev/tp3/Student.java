@@ -61,9 +61,4 @@ public class Student extends People {
         sb.append("Status: ").append(getStudentStatus()).append("\n");
         return super.toString() + sb.toString();
     }
-    
-//    @Override
-//    public String toString() {
-//        return super.toString() + "AV1: "+firstGrade+"\n"+"AV2: "+secondGrade+"\n"+"\n"+"Média: "+getStudentAverage()+"\n"+"Status: "+getStudentStatus()+"\n";
-//    }
 }  

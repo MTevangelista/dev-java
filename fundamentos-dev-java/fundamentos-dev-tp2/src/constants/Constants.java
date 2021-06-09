@@ -25,6 +25,7 @@ public class Constants {
     public static final String INVALID_MESSAGE_TYPE = "O tipo da mensagem é inválido!";
     public static final String INVALID_GRADE = "Nota inválida!";
     public static final String PEOPLE_NOT_FOUND = "Nenhuma pessoa encontrada!";
+    public static final String INVALID_DATA = "Erro: dado inválido!";
     
     // Menu
     public static final String MENU_OPTIONS = "[1] Cadastrar professor\n"

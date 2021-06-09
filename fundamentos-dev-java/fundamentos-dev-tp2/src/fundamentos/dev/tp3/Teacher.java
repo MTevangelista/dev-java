@@ -57,6 +57,11 @@ public class Teacher extends People{
     
     @Override
     public String toString() {
-        return super.toString() + "Disciplina: "+subject+"\n"+"Salário base: R$ "+salary+"\n"+"Horas de trabalho: "+workHours+"\n"+"Salário total: R$ "+calculateSalary();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Disciplina: ").append(subject).append("\n");
+        sb.append("Salário base: R$ ").append(salary).append("\n");
+        sb.append("Horas de trabalho: ").append(workHours).append("\n");
+        sb.append("Salário total: ").append(calculateSalary()).append("\n");
+        return super.toString() + sb.toString();
     }
 }

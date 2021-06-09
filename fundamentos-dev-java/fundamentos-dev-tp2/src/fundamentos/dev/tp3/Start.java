@@ -1,7 +1,7 @@
 package fundamentos.dev.tp3;
 
 import constants.Constants;
-import enums.PeopleTypes;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Start {
@@ -31,10 +31,10 @@ public class Start {
     private static void start(int option, People[] peoples) {
         switch (option) {
             case 1:
-                registerPeople(PeopleTypes.STUDENT, peoples);
+                addTeacherInformation(peoples);
                 break;
             case 2:
-                registerPeople(PeopleTypes.TEACHER, peoples);
+                addStudentInformation(peoples);
                 break;
             case 3: 
                 searchPeople(peoples);
@@ -43,18 +43,7 @@ public class Start {
                 showMessage(Constants.ERR, Constants.INVALID_OPERATION);
         }
     }
-    
-    private static void registerPeople(PeopleTypes type, People[] peoples) {
-        switch (type) {
-            case STUDENT:
-                addTeacherInformation(peoples);
-                break;
-            case TEACHER:
-                addStudentInformation(peoples);
-                break;
-        }
-    }
-    
+
     private static void addTeacherInformation(People[] peoples) {
         Teacher teacher = new Teacher();
                 
@@ -105,11 +94,21 @@ public class Start {
     }
     
     private static int readIntValue(String msg) {
-        int value;
+        int value = 0;
+        boolean isValidValue = false;
         Scanner scanner = new Scanner(System.in);
         
-        showMessage(Constants.OUT, msg);
-        value = scanner.nextInt();
+        do {
+            try {
+                showMessage(Constants.OUT, msg);
+                value = scanner.nextInt();
+                isValidValue = true;
+            } catch (InputMismatchException e) {
+                showMessage(Constants.ERR, Constants.INVALID_DATA);
+                scanner.next();
+            }
+        } while (!isValidValue);
+        
         return value;
     }
     
@@ -123,25 +122,46 @@ public class Start {
     }
     
     private static double readDoubleGrade(String msg) {
-        double value;
+        double value = 0;
+        boolean isValidValue = false;
         Scanner scanner = new Scanner(System.in);
         
-        showMessage(Constants.OUT, msg);
-        value = scanner.nextDouble();
-        while (!isValidGrade(value)) {
-            showMessage(Constants.ERR, Constants.INVALID_GRADE);
-            showMessage(Constants.OUT, msg);
-            value = scanner.nextDouble();
-        }
+        do {
+            try {
+                showMessage(Constants.OUT, msg);
+                value = scanner.nextDouble();
+                while (!isValidGrade(value)) {
+                    showMessage(Constants.ERR, Constants.INVALID_GRADE);
+                    showMessage(Constants.OUT, msg);
+                    value = scanner.nextDouble();
+                }
+                isValidValue = true;
+            } catch (InputMismatchException e) {
+                showMessage(Constants.ERR, Constants.INVALID_DATA);
+                scanner.next();
+            } catch (Exception e) {
+                showMessage(Constants.ERR, Constants.INVALID_GRADE);
+                scanner.next();
+            }
+        } while (!isValidValue);
         return value;
     }
     
     private static double readDoubleValue(String msg) {
-        double value;
+        double value = 0;
+        boolean isValidValue = false;
         Scanner scanner = new Scanner(System.in);
         
-        showMessage(Constants.OUT, msg);
-        value = scanner.nextDouble();
+        do {
+            try {
+                showMessage(Constants.OUT, msg);
+                value = scanner.nextDouble();
+                isValidValue = true;
+            } catch (InputMismatchException e) {
+                showMessage(Constants.ERR, Constants.INVALID_DATA);
+                scanner.next();
+            }
+        } while (!isValidValue);
         return value;
     }
     
