@@ -1,4 +1,4 @@
-package arq;
+package arquivo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,9 +25,9 @@ public class Arquivo {
     }
     
     public static void lerArquivo(Scanner entrada, ArrayList<Aluno> alunos) {
+        
         String linha;
         String[] campos;
-        
         while (entrada.hasNext()) {
             linha = entrada.nextLine();
             campos = linha.split(";");
@@ -48,21 +48,21 @@ public class Arquivo {
     }
     
     public static void gravarAlunos(Formatter saida, ArrayList<Aluno> alunos) {
-        for (Aluno aluno: alunos) {
-            saida.format("$s;$s\n", aluno.getNome(), aluno.getTelefone());
+        
+        for (Aluno aluno : alunos) {
+            saida.format("%s;%s\n", aluno.getNome(), aluno.getTelefone());
         }
-//        alunos.forEach(aluno -> {
-//            saida.format("$s;$s\n", aluno.getNome(), aluno.getTelefone());
-//        });       
     }
     
     public static void fecharArquivo(Formatter saida) {
+        
         if (saida != null) {
             saida.close();
         }
     }
     
     public static void fecharArquivo(Scanner entrada) {
+        
         if (entrada != null) {
             entrada.close();
         }        

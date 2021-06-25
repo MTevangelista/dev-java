@@ -43,7 +43,7 @@ public class Calc implements ICalc {
         double result;
         
         result = op1 + op2;
-        log.add(op1 + " + " + op2 + " = " + result);
+        log.add(op1 + " + o " + op2 + " = " + result);
         return op1 + op2; 
     }
     

@@ -1,10 +1,8 @@
-package arq;
+package arquivo;
 
 public class Aluno {
     private String nome;
     private String telefone;
-    
-    public Aluno() {}
     
     public Aluno(String nome, String telefone) {
         this.nome = nome;
@@ -26,9 +24,9 @@ public class Aluno {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
+
     @Override
     public String toString() {
-        return "Nome: " +nome+" Telefone: "+telefone;
+        return "Aluno{" + "nome=" + nome + ", telefone=" + telefone + '}';
     }
 }
