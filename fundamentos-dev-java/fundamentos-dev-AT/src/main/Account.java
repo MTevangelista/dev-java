@@ -1,9 +1,12 @@
 package main;
 
+import java.util.ArrayList;
+
 public abstract class Account {
     private String name;
     private int accountNumber;
     private double accountBalance;
+    private ArrayList<Operation> operations;
     
     public Account() {}
     
@@ -11,6 +14,14 @@ public abstract class Account {
         this.name = name;
         this.accountNumber = accountNumber;
         this.accountBalance = accountBalance;
+    }
+
+    public ArrayList<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(ArrayList<Operation> operations) {
+        this.operations = operations;
     }
 
     public String getName() {

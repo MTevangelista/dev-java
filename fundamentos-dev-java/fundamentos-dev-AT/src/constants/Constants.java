@@ -3,11 +3,13 @@ package constants;
 public final class Constants {
     
     // File name
-    public static final String FILE_NAME = "accounts.txt";
+    public static final String ACCOUNTS_FILE_NAME = "accounts.txt";
+    public static final String OPERATIONS_FILE_NAME = "operations.txt";
     
     // Input Messages
     public static final String ENTER_YOUR_ACCOUNT_BALANCE = "Entre com o saldo da conta: ";
     public static final String ENTER_YOUR_ACCOUNT_NUMBER = "Entre com o número da conta: ";
+    public static final String ENTER_YOUR_OPERATION_VALUE = "Entre com o valor da da operaçao: ";
     
     // AccountPJ Input Messages 
     public static final String ENTER_YOUR_ACCOUNT_HOLDER_NAME = "Entre com o nome do correntista: ";
@@ -36,6 +38,7 @@ public final class Constants {
     public static final String INVALID_BALANCE = "Erro: saldo precisa ser maior ou igual a 0";
     public static final String INVALID_NUMBER = "Erro: número precisa ser um inteiro";
     public static final String ACCOUNT_ALREADY_EXISTS = "Erro: conta já existe";
+    public static final String ACCOUNT_NOT_FOUND = "Nenhuma conta encontrada";
     public static final String ACCOUNT_CANNOT_REMOVED = "Conta não pode ser removida";
     
     // User menu options 
@@ -43,11 +46,15 @@ public final class Constants {
                 + "[2] Alterar conta\n"
                 + "[3] Excluir conta\n"
                 + "[4] Relatórios gerenciais\n"
-                + "[5] Sair";
+                + "[5] Sair\n";
     
     // Account type options 
     public static final String ACCOUNT_TYPES_OPTIONS_MENU = "[1] Conta PF\n"
                 + "[2] Conta PJ\n";
+    
+    // Operation options 
+    public static final String OPERATIONS_TYPES_OPTIONS_MENU = "[1] Crédito\n"
+                + "[2] Débito\n";
     
     // Management reports
     public static final String MANAGEMENT_REPORTS_MENU = "[1] Listar clientes com saldo negativo\n"

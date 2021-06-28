@@ -3,6 +3,7 @@ package main;
 import constants.Constants;
 import enums.MenuOptionsTypeEnum;
 import enums.MessageTypesEnum;
+import enums.OperationTypeEnum;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -14,34 +15,45 @@ public final class Main {
         final int END = 5;
         int option;
         ArrayList<Account> accounts = new ArrayList();
-        Scanner scanner;
-        
-        FileManager.setFileName(Constants.FILE_NAME);
-        scanner = FileManager.openTheReading();
-        if (scanner != null) {
-            FileManager.readFile(scanner, accounts);
-            FileManager.CloseFile(scanner);
-        }
-        else {
-            Util.showMessage(MessageTypesEnum.ERR, Constants.FILE_READ_ERROR);
-        }
-        
+
+        setUpFile(accounts);
+
         option = menu(MenuOptionsTypeEnum.USER_OPTIONS);
         while (option != END) {
             start(option, accounts);
             Util.showMessage(MessageTypesEnum.OUT, Constants.EMPTY_MESSAGE);
             option = menu(MenuOptionsTypeEnum.USER_OPTIONS);
         }
-        updateFile(accounts);
+        updateAccountsFile(accounts);
     }
     
-    private static void updateFile(ArrayList<Account> accounts) {
-        Formatter exit = FileManager.openTheRecording();
+    private static void setUpFile(ArrayList<Account> accounts) {
+        Scanner accountsScanner;
+        Scanner operationsScanner;
         
+        accountsScanner = FileManager.openTheReading(Constants.ACCOUNTS_FILE_NAME);
+        operationsScanner = FileManager.openTheReading(Constants.OPERATIONS_FILE_NAME);
+        if (accountsScanner != null) {
+            FileManager.readFile(accountsScanner, accounts, operationsScanner);
+            FileManager.CloseFile(accountsScanner);
+            FileManager.CloseFile(operationsScanner);
+        }
+        else {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.FILE_READ_ERROR);
+        }
+    }
+    
+    private static void updateAccountsFile(ArrayList<Account> accounts) {
+        Formatter exit = FileManager.openTheRecording(Constants.ACCOUNTS_FILE_NAME);
         FileManager.saveAccount(exit, accounts);
         FileManager.CloseFile(exit);
     }
     
+    private static void updateOperationsFile(ArrayList<Operation> operations) {
+        Formatter exit = FileManager.openTheRecording(Constants.OPERATIONS_FILE_NAME);
+        FileManager.saveOperation(exit, operations);
+        FileManager.CloseFile(exit);
+    }
 
     private static int menu(MenuOptionsTypeEnum optionsType) {
         int option;
@@ -71,6 +83,7 @@ public final class Main {
                 registerAccount(accounts);
                 break;
             case 2:
+                editAccount(accounts);
                 break;
             case 3:
                 removeAccount(accounts);
@@ -131,16 +144,33 @@ public final class Main {
             Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
         }
     }
-   
-    private static int getAccountIndex(int accountNumber, ArrayList<Account> accounts) {
-        int index = 0;
+    
+    private static void editAccount(ArrayList<Account> accounts) {
+        int accountNumber;
+        double operationValue;
+        OperationTypeEnum operationType;
+        Account account;
         
-        for (Account account : accounts) {
-            if (account.getAccountNumber() == accountNumber) {
-                index = accounts.indexOf(account);
+        accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
+        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
+            account = Util.getAccount(accountNumber, accounts);
+            operationType = Util.getOperationType();
+            switch (operationType) {
+                case CREDIT:
+                    operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
+                    account.setAccountBalance(account.getAccountBalance() + operationValue);
+                    break;
+                case DEBIT:
+                    if (account instanceof AccountPF) {
+                        System.out.println(account);
+                    } else if (account instanceof AccountPJ) {
+                        
+                    }
+                    break;
             }
+        } else {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
         }
-        return index;
     }
     
     private static void removeAccount(ArrayList<Account> accounts) {
@@ -148,13 +178,16 @@ public final class Main {
         int accountIndex;
         
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
-        if (DataValidation.canRemoveAccount(accountNumber, accounts)) {
-            accountIndex = getAccountIndex(accountNumber, accounts);
-            accounts.remove(accountIndex);
-            updateFile(accounts);
-            Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REMOVED_SUCCESSFULLY);
+        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
+            if (DataValidation.canRemoveAccount(accountNumber, accounts)) {
+                accountIndex = Util.getAccountIndex(accountNumber, accounts);
+                accounts.remove(accountIndex);
+                Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REMOVED_SUCCESSFULLY);
+            } else {
+                Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_CANNOT_REMOVED);
+            }
         } else {
-            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_CANNOT_REMOVED);
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
         }
     }
     
@@ -170,7 +203,6 @@ public final class Main {
             case 2: 
                 // Listar os clientes que tem saldo acima de um determinado valor
                 getAccountsByBalance(accounts);
-                
                 break;
             case 3:
                 // Listar todas as contas separadas por tipo

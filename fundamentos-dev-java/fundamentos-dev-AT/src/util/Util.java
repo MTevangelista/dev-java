@@ -2,11 +2,56 @@ package util;
 
 import constants.Constants;
 import enums.MessageTypesEnum;
+import enums.OperationTypeEnum;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import main.Account;
 import validation.DataValidation;
 
 public final class Util {
+    public static OperationTypeEnum getOperationType() {
+        int option;
+        OperationTypeEnum type = null;
+        
+        option = Util.readIntValue(Constants.OPERATIONS_TYPES_OPTIONS_MENU);
+        while (!DataValidation.isValidOperationType(option)) {            
+            Util.showMessage(MessageTypesEnum.ERR, Constants.INVALID_OPERATION);
+            option = Util.readIntValue(Constants.OPERATIONS_TYPES_OPTIONS_MENU);
+        }
+        switch (option) {
+            case 1:
+                type = OperationTypeEnum.CREDIT;
+                break;
+            case 2:
+                type = OperationTypeEnum.DEBIT;
+                break;
+        }
+        return type;
+    }
+    
+    public static int getAccountIndex(int accountNumber, ArrayList<Account> accounts) {
+        int index = 0;
+        
+        for (Account account : accounts) {
+            if (account.getAccountNumber() == accountNumber) {
+                index = accounts.indexOf(account);
+            }
+        }
+        return index;
+    }
+    
+    public static Account getAccount(int accountNumber, ArrayList<Account> accounts) {
+        Account account = null;
+        
+        for (Account each : accounts) {
+            if (each.getAccountNumber() == accountNumber) {
+                account = each;
+            }
+        }
+        return account;
+    }
+    
     public static String readName(String msg) {
         String value;
         Scanner scanner = new Scanner(System.in);
@@ -15,7 +60,7 @@ public final class Util {
         value = scanner.nextLine();
         while(!DataValidation.isValidName(value)) {
             Util.showMessage(MessageTypesEnum.ERR, Constants.INVALID_NAME);
-           Util.showMessage(MessageTypesEnum.OUT, msg);
+            Util.showMessage(MessageTypesEnum.OUT, msg);
             value = scanner.nextLine();
         }
         return value;

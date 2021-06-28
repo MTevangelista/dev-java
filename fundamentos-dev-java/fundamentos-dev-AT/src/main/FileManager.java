@@ -11,13 +11,18 @@ import enums.MessageTypesEnum;
 import util.Util;
 
 public class FileManager {
-    private static String fileName;
-    
-    public static void setFileName(String name) {
-        fileName = name;
+    public static Scanner openTheReading(String fileName) {
+        Scanner scanner = null;
+        
+        try {
+            scanner = new Scanner(new File(fileName));
+        } catch (FileNotFoundException ex) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.FILE_OPEN_ERROR);
+        }
+        return scanner;
     }
-    
-    public static Scanner openTheReading() {
+
+    public static Scanner openTheReading2(String fileName) {
         Scanner scanner = null;
         
         try {
@@ -28,12 +33,47 @@ public class FileManager {
         return scanner;
     }
     
-    public static void readFile(Scanner scanner, ArrayList<Account> accounts) {
+    public static ArrayList<Operation> readFileOperation(Scanner scanner) {
         String line;
         String[] fields;
+        ArrayList<Operation> operations = null;
         
         while (scanner.hasNext()) {
             line = scanner.nextLine();
+            fields = line.split(";");
+            Operation operation = new Operation(Integer.parseInt(fields[0]), fields[1], fields[1], Double.parseDouble(fields[3]));
+            operations.add(operation);
+        }
+        return operations;
+    }
+    
+//    public static void readFileOperation(Scanner scanner, ArrayList<Operation> operations, ArrayList<Account> accounts) {
+//        String line;
+//        String[] fields;
+//        
+//        while (scanner.hasNext()) {
+//            line = scanner.nextLine();
+//            fields = line.split(";");
+//            Operation operation = new Operation(Integer.parseInt(fields[0]), fields[1], fields[1], Double.parseDouble(fields[3]));
+//            operations.add(operation);
+//        }
+//        
+//        for (Account account : accounts) {
+//                for (Operation operation : operations) {
+//                    if (account.getAccountNumber() == operation.getAccountNumber()) {
+//                        account.getOperations().add(operation);
+//                    }
+//                }
+//        }
+//    }
+    
+    public static void readFile(Scanner accountsScanner, ArrayList<Account> accounts, Scanner operationsScanner) {
+        String line;
+        String[] fields;
+        ArrayList<Operation> operations;
+        
+        while (accountsScanner.hasNext()) {
+            line = accountsScanner.nextLine();
             fields = line.split(";");
             if (fields[0] == AccountTypeEnum.PF.toString()) {
                 // String name,                   int accountNumber,                   double accountBalance,                   String cpf,                   double specialCheck
@@ -45,9 +85,20 @@ public class FileManager {
                 accounts.add(accountPJ);
             }
         }
+
+        operations = readFileOperation(operationsScanner);
+        if (operations != null) {
+            for (Account account : accounts) {
+               for (Operation operation : operations) {
+                    if (account.getAccountNumber() == operation.getAccountNumber()) {
+                        account.getOperations().add(operation);
+                    }
+                }
+            }
+        }
     }
     
-    public static Formatter openTheRecording() {
+    public static Formatter openTheRecording(String fileName) {
         Formatter exit = null;
         
         try {
@@ -65,6 +116,12 @@ public class FileManager {
             } else if (account instanceof AccountPJ) {
                 exit.format("%s;%s;%s;%s;%s\n", AccountTypeEnum.PJ, account.getName(), account.getAccountNumber(), account.getAccountBalance(), ((AccountPJ) account).getCNPJ());
             }
+        }
+    }
+    
+    public static void saveOperation(Formatter exit, ArrayList<Operation> operations) {
+        for (Operation operation : operations) {
+            exit.format("%s;%s;%s;%s\n", operation.getAccountNumber(), operation.getType(), operation.getOperationDate(), operation.getValue());
         }
     }
 

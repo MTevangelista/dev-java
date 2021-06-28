@@ -4,6 +4,15 @@ import main.Account;
 import java.util.ArrayList;
 
 public final class DataValidation {
+    public static boolean isValidOperationType(int option) {
+        boolean isValidOption = false;
+        
+        if ((option == 1) || (option == 2)) {
+            isValidOption = true;
+        }
+        return isValidOption;
+    }
+    
     public static boolean isValidName(String name) {
         String[] splittedName = name.split(" ");
         return splittedName.length >= 2;
