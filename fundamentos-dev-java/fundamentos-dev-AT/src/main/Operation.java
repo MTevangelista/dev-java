@@ -50,9 +50,9 @@ public class Operation {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Número da conta: ").append(accountNumber).append("\n");;
+        sb.append("Número da conta: ").append(accountNumber).append("\n");
         sb.append("Tipo da operação: ").append(type).append("\n");;
-        sb.append("Data da operação: ").append(operationDate).append("\n");;
+        sb.append("Data da operação: ").append(operationDate).append("\n");
         sb.append("Valor: ").append(value).append("\n");;
         return sb.toString();
     }

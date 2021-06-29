@@ -34,14 +34,13 @@ public final class Main {
         
         accountsScanner = FileManager.openTheReading(Constants.ACCOUNTS_FILE_NAME);
         operationsScanner = FileManager.openTheReading(Constants.OPERATIONS_FILE_NAME);
-        if (accountsScanner != null) {
-            FileManager.readFile(accountsScanner, accounts, operations, operationsScanner);
-            FileManager.CloseFile(accountsScanner);
-            FileManager.CloseFile(operationsScanner);
-        }
-        else {
+        if (accountsScanner == null) {
             Util.showMessage(MessageTypesEnum.ERR, Constants.FILE_READ_ERROR);
+            return;
         }
+        FileManager.readFile(accountsScanner, accounts, operations, operationsScanner);
+        FileManager.CloseFile(accountsScanner);
+        FileManager.CloseFile(operationsScanner);
     }
     
     private static void updateAccountsFile(ArrayList<Account> accounts) {
@@ -100,7 +99,13 @@ public final class Main {
     
     private static void registerAccount(ArrayList<Account> accounts) {
         int accountType; 
+        int accountNumber;
         
+        accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
+        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_ALREADY_EXISTS);
+            return;
+        }
         accountType = menu(MenuOptionsTypeEnum.ACCOUNT_TYPES_MENU);
         switch (accountType) {
             case 1:
@@ -119,31 +124,23 @@ public final class Main {
         AccountPF accountPF = new AccountPF();
 
         accountPF.setAccountNumber(Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER));
-        if (DataValidation.hasRepeatedAccount(accountPF.getAccountNumber(), accounts)) {
-            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_ALREADY_EXISTS);
-        } else {
-            accountPF.setName(Util.readName(Constants.ENTER_YOUR_ACCOUNT_HOLDER_NAME));
-            accountPF.setCPF(String.valueOf(Util.readIntValue(Constants.ENTER_YOUR_CPF)));
-            accountPF.setAccountBalance(Util.readDoubleValue(Constants.ENTER_YOUR_ACCOUNT_BALANCE));
-            accountPF.setSpecialCheck(Util.readDoubleValue(Constants.ENTER_YOUR_SPECIAL_CHECK));
-            accounts.add(accountPF);
-            Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
-        }
+        accountPF.setName(Util.readName(Constants.ENTER_YOUR_ACCOUNT_HOLDER_NAME));
+        accountPF.setCPF(String.valueOf(Util.readIntValue(Constants.ENTER_YOUR_CPF)));
+        accountPF.setAccountBalance(Util.readDoubleValue(Constants.ENTER_YOUR_ACCOUNT_BALANCE));
+        accountPF.setSpecialCheck(Util.readDoubleValue(Constants.ENTER_YOUR_SPECIAL_CHECK));
+        accounts.add(accountPF);
+        Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
     }
     
     private static void setAccountPJData(ArrayList<Account> accounts) {
         AccountPJ accountPJ = new AccountPJ();
 
         accountPJ.setAccountNumber(Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER));
-        if (DataValidation.hasRepeatedAccount(accountPJ.getAccountNumber(), accounts)) {
-            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_ALREADY_EXISTS);
-        } else {
-            accountPJ.setName(Util.readName(Constants.ENTER_YOUR_COMPANY_NAME));
-            accountPJ.setCNPJ(String.valueOf(Util.readIntValue(Constants.ENTER_YOUR_CNPJ)));
-            accountPJ.setAccountBalance(Util.readDoubleValue(Constants.ENTER_YOUR_ACCOUNT_BALANCE));
-            accounts.add(accountPJ);
-            Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
-        }
+        accountPJ.setName(Util.readName(Constants.ENTER_YOUR_COMPANY_NAME));
+        accountPJ.setCNPJ(String.valueOf(Util.readIntValue(Constants.ENTER_YOUR_CNPJ)));
+        accountPJ.setAccountBalance(Util.readDoubleValue(Constants.ENTER_YOUR_ACCOUNT_BALANCE));
+        accounts.add(accountPJ);
+        Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
     }
     
     private static void editAccount(ArrayList<Account> accounts, ArrayList<Operation> operations) {
@@ -153,36 +150,36 @@ public final class Main {
         Account account;
         
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
-        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
-            account = Util.getAccount(accountNumber, accounts);
-            operationType = Util.getOperationType();
-            switch (operationType) {
-                case CREDIT:
-                    operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
-                    account.setAccountBalance(account.getAccountBalance() + operationValue);
-                    setOperationData(accountNumber, Constants.CREDIT, operationValue, operations);
-                    break;
-                case DEBIT:
-                    operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
-                    if (account instanceof AccountPF) {
-                        if (DataValidation.canDebitBeDone(account.getAccountBalance(), ((AccountPF) account).getSpecialCheck(), operationValue)) {
-                            account.setAccountBalance(account.getAccountBalance() - operationValue);
-                            setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
-                        } else {
-                            Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION_SPECIAL_CHECK);
-                        }
-                    } else if (account instanceof AccountPJ) {
-                        if (DataValidation.accountHasBalance(account)) {
-                            account.setAccountBalance(account.getAccountBalance() - operationValue);
-                            setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
-                        } else {
-                            Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION);
-                        }
-                    }
-                    break;
-            }
-        } else {
+        if (!DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
             Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
+            return;
+        }
+        account = Util.getAccount(accountNumber, accounts);
+        operationType = Util.getOperationType();
+        switch (operationType) {
+            case CREDIT:
+                operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
+                account.setAccountBalance(account.getAccountBalance() + operationValue);
+                setOperationData(accountNumber, Constants.CREDIT, operationValue, operations);
+                break;
+            case DEBIT:
+                operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
+                if (account instanceof AccountPF) {
+                    if (!DataValidation.canDebitBeDone(operationValue, operationValue, operationValue)) {
+                        Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION_SPECIAL_CHECK);
+                        return;
+                    }
+                    account.setAccountBalance(account.getAccountBalance() - operationValue);
+                    setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
+                } else {
+                    if (!DataValidation.accountHasBalance(account)) {
+                        Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION);
+                        return;
+                    }
+                    account.setAccountBalance(account.getAccountBalance() - operationValue);
+                    setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
+                }
+                break;
         }
     }
     
@@ -201,40 +198,40 @@ public final class Main {
         int accountIndex;
         
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
-        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
-            if (DataValidation.canRemoveAccount(accountNumber, accounts)) {
-                accountIndex = Util.getAccountIndex(accountNumber, accounts);
-                accounts.remove(accountIndex);
-                Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REMOVED_SUCCESSFULLY);
-            } else {
-                Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_CANNOT_REMOVED);
-            }
-        } else {
+        if (!DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
             Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
+            return;
         }
+        if (!DataValidation.canRemoveAccount(accountNumber, accounts)) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_CANNOT_REMOVED);
+            return;
+        }
+        accountIndex = Util.getAccountIndex(accountNumber, accounts);
+        accounts.remove(accountIndex);
+        Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REMOVED_SUCCESSFULLY);
     }
     
     private static void ShowReportOptions(ArrayList<Account> accounts) {
         int option;
 
-        if (DataValidation.accountExists(accounts)) {
-            option = menu(MenuOptionsTypeEnum.MANAGEMENT_REPORTS);
-            switch (option) {
-                case 1:
-                    getNegativeBalanceAccounts(accounts);
-                    break;
-                case 2: 
-                    getAccountsByBalance(accounts);
-                    break;
-                case 3:
-                    getAccountsByType(accounts);
-                    break;
-                case 4:
-                    getAccountOperation(accounts);
-                    break;
-            }
-        } else {
-            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
+        if (!DataValidation.accountExists(accounts)) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.LIST_IS_EMPTY);
+            return;
+        }
+        option = menu(MenuOptionsTypeEnum.MANAGEMENT_REPORTS);
+        switch (option) {
+            case 1:
+                getNegativeBalanceAccounts(accounts);
+                break;
+            case 2: 
+                getAccountsByBalance(accounts);
+                break;
+            case 3:
+                getAccountsByType(accounts);
+                break;
+            case 4:
+                getAccountOperation(accounts);
+                break;
         }
     }
     
@@ -274,17 +271,16 @@ public final class Main {
         int accountNumber;
         
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
-        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
-            for (Account account : accounts) {
-                if (account.getAccountNumber() == accountNumber) {
-                    for (Operation operation : account.getOperations()) {
-                        Util.showMessage(MessageTypesEnum.OUT, operation.toString());
-                    }
+        if (!DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
+            return;
+        }
+        for (Account account : accounts) {
+            if (account.getAccountNumber() == accountNumber) {
+                for (Operation operation : account.getOperations()) {
+                    Util.showMessage(MessageTypesEnum.OUT, operation.toString());
                 }
             }
-        } else {
-            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
         }
-        
     }
 }

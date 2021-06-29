@@ -41,11 +41,12 @@ public final class Constants {
     public static final String INVALID_DATA = "Erro: dado inválido!";
     public static final String INVALID_BALANCE = "Erro: saldo precisa ser maior ou igual a 0";
     public static final String INVALID_NUMBER = "Erro: número precisa ser um inteiro";
-    public static final String INVALID_DEBIT_OPERATION = "Débito inválido, a conta não possui saldo";
-    public static final String INVALID_DEBIT_OPERATION_SPECIAL_CHECK = "Débito inválido, a conta não possui saldo";
+    public static final String INVALID_DEBIT_OPERATION = "Débito inválido, a conta não possui saldo suficiente";
+    public static final String INVALID_DEBIT_OPERATION_SPECIAL_CHECK = "Débito inválido, valor é maior que cheque especial";
     public static final String ACCOUNT_ALREADY_EXISTS = "Erro: conta já existe";
     public static final String ACCOUNT_NOT_FOUND = "Nenhuma conta encontrada";
-    public static final String ACCOUNT_CANNOT_REMOVED = "Conta não pode ser removida";
+    public static final String ACCOUNT_CANNOT_REMOVED = "Conta não pode ser removida, saldo precisa ser igual a 0";
+    public static final String LIST_IS_EMPTY = "Operação não pode ser feita pois a lista está vazia";
     
     // User menu options 
     public static final String USER_OPTIONS_MENU = "[1] Cadastrar conta\n"
