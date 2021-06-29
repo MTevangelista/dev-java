@@ -8,12 +8,15 @@ public abstract class Account {
     private double accountBalance;
     private ArrayList<Operation> operations;
     
-    public Account() {}
+    public Account() {
+        this.operations = new ArrayList<Operation>();
+    }
     
     public Account(String name, int accountNumber, double accountBalance) {
         this.name = name;
         this.accountNumber = accountNumber;
         this.accountBalance = accountBalance;
+        this.operations = new ArrayList<Operation>();
     }
 
     public ArrayList<Operation> getOperations() {

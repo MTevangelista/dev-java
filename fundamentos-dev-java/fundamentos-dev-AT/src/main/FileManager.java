@@ -33,63 +33,42 @@ public class FileManager {
         return scanner;
     }
     
-    public static ArrayList<Operation> readFileOperation(Scanner scanner) {
+    public static ArrayList<Operation> readFileOperation(ArrayList<Operation> operations, Scanner scanner) {
         String line;
         String[] fields;
-        ArrayList<Operation> operations = null;
         
         while (scanner.hasNext()) {
             line = scanner.nextLine();
             fields = line.split(";");
-            Operation operation = new Operation(Integer.parseInt(fields[0]), fields[1], fields[1], Double.parseDouble(fields[3]));
+            Operation operation = new Operation(Integer.parseInt(fields[0]), fields[1], fields[2], Double.parseDouble(fields[3]));
             operations.add(operation);
         }
         return operations;
     }
     
-//    public static void readFileOperation(Scanner scanner, ArrayList<Operation> operations, ArrayList<Account> accounts) {
-//        String line;
-//        String[] fields;
-//        
-//        while (scanner.hasNext()) {
-//            line = scanner.nextLine();
-//            fields = line.split(";");
-//            Operation operation = new Operation(Integer.parseInt(fields[0]), fields[1], fields[1], Double.parseDouble(fields[3]));
-//            operations.add(operation);
-//        }
-//        
-//        for (Account account : accounts) {
-//                for (Operation operation : operations) {
-//                    if (account.getAccountNumber() == operation.getAccountNumber()) {
-//                        account.getOperations().add(operation);
-//                    }
-//                }
-//        }
-//    }
-    
-    public static void readFile(Scanner accountsScanner, ArrayList<Account> accounts, Scanner operationsScanner) {
+    public static void readFile(Scanner accountsScanner, ArrayList<Account> accounts, ArrayList<Operation> operations, Scanner operationsScanner) {
         String line;
         String[] fields;
-        ArrayList<Operation> operations;
         
         while (accountsScanner.hasNext()) {
             line = accountsScanner.nextLine();
             fields = line.split(";");
-            if (fields[0] == AccountTypeEnum.PF.toString()) {
-                // String name,                   int accountNumber,                   double accountBalance,                   String cpf,                   double specialCheck
+            if (AccountTypeEnum.PF.toString().equals(fields[0])) {
                 AccountPF accountPF = new AccountPF(fields[1], Integer.parseInt(fields[2]), Double.parseDouble(fields[3]), fields[4], Double.parseDouble(fields[5]));
                 accounts.add(accountPF);
             } else {
-                // String name,                   int accountNumber,                   double accountBalance,                   String cnpj)
                 AccountPJ accountPJ = new AccountPJ(fields[1], Integer.parseInt(fields[2]), Double.parseDouble(fields[3]), fields[4]);
                 accounts.add(accountPJ);
             }
         }
-
-        operations = readFileOperation(operationsScanner);
+        joinFiles(accounts, operations, operationsScanner);
+    }
+    
+    private static void joinFiles(ArrayList<Account> accounts, ArrayList<Operation> operations, Scanner operationsScanner) {
+        operations = readFileOperation(operations, operationsScanner);
         if (operations != null) {
             for (Account account : accounts) {
-               for (Operation operation : operations) {
+                for (Operation operation : operations) {
                     if (account.getAccountNumber() == operation.getAccountNumber()) {
                         account.getOperations().add(operation);
                     }

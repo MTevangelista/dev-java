@@ -15,26 +15,27 @@ public final class Main {
         final int END = 5;
         int option;
         ArrayList<Account> accounts = new ArrayList();
-
-        setUpFile(accounts);
-
+        ArrayList<Operation> operations = new ArrayList<>();
+        
+        setUpFile(accounts, operations);
         option = menu(MenuOptionsTypeEnum.USER_OPTIONS);
         while (option != END) {
-            start(option, accounts);
+            start(option, accounts, operations);
             Util.showMessage(MessageTypesEnum.OUT, Constants.EMPTY_MESSAGE);
             option = menu(MenuOptionsTypeEnum.USER_OPTIONS);
         }
         updateAccountsFile(accounts);
+        updateOperationsFile(operations);
     }
     
-    private static void setUpFile(ArrayList<Account> accounts) {
+    private static void setUpFile(ArrayList<Account> accounts, ArrayList<Operation> operations) {
         Scanner accountsScanner;
         Scanner operationsScanner;
         
         accountsScanner = FileManager.openTheReading(Constants.ACCOUNTS_FILE_NAME);
         operationsScanner = FileManager.openTheReading(Constants.OPERATIONS_FILE_NAME);
         if (accountsScanner != null) {
-            FileManager.readFile(accountsScanner, accounts, operationsScanner);
+            FileManager.readFile(accountsScanner, accounts, operations, operationsScanner);
             FileManager.CloseFile(accountsScanner);
             FileManager.CloseFile(operationsScanner);
         }
@@ -77,13 +78,13 @@ public final class Main {
         return option;
     }
     
-    private static void start(int option, ArrayList<Account> accounts) {
+    private static void start(int option, ArrayList<Account> accounts, ArrayList<Operation> operations) {
         switch (option) {
             case 1:
                 registerAccount(accounts);
                 break;
             case 2:
-                editAccount(accounts);
+                editAccount(accounts, operations);
                 break;
             case 3:
                 removeAccount(accounts);
@@ -145,9 +146,9 @@ public final class Main {
         }
     }
     
-    private static void editAccount(ArrayList<Account> accounts) {
+    private static void editAccount(ArrayList<Account> accounts, ArrayList<Operation> operations) {
         int accountNumber;
-        double operationValue;
+        double operationValue = 0;
         OperationTypeEnum operationType;
         Account account;
         
@@ -159,18 +160,40 @@ public final class Main {
                 case CREDIT:
                     operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
                     account.setAccountBalance(account.getAccountBalance() + operationValue);
+                    setOperationData(accountNumber, Constants.CREDIT, operationValue, operations);
                     break;
                 case DEBIT:
+                    operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
                     if (account instanceof AccountPF) {
-                        System.out.println(account);
+                        if (DataValidation.canDebitBeDone(((AccountPF) account).getSpecialCheck(), operationValue)) {
+                            account.setAccountBalance(account.getAccountBalance() - operationValue);
+                            setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
+                        } else {
+                            Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION_SPECIAL_CHECK);
+                        }
                     } else if (account instanceof AccountPJ) {
-                        
+                        if (DataValidation.accountHasBalance(account)) {
+                            account.setAccountBalance(account.getAccountBalance() - operationValue);
+                            setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
+                        } else {
+                            Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION);
+                        }
                     }
                     break;
             }
         } else {
             Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
         }
+    }
+    
+    private static void setOperationData(int accountNumber, String type, double operationValue, ArrayList<Operation> operations) {
+        Operation operation = new Operation();
+        
+        operation.setAccountNumber(accountNumber);
+        operation.setOperationDate(Util.getDate());
+        operation.setType(type);
+        operation.setValue(operationValue);
+        operations.add(operation);    
     }
     
     private static void removeAccount(ArrayList<Account> accounts) {
@@ -193,24 +216,25 @@ public final class Main {
     
     private static void ShowReportOptions(ArrayList<Account> accounts) {
         int option;
-        
-        option = menu(MenuOptionsTypeEnum.MANAGEMENT_REPORTS);
-        switch (option) {
-            case 1:
-                // Listar clientes com saldo negativo
-                getNegativeBalanceAccounts(accounts);
-                break;
-            case 2: 
-                // Listar os clientes que tem saldo acima de um determinado valor
-                getAccountsByBalance(accounts);
-                break;
-            case 3:
-                // Listar todas as contas separadas por tipo
-                getAccountsByType(accounts);
-                break;
-            case 4:
-                // Listar as operações realizadas em uma determinada conta
-                break;
+
+        if (DataValidation.accountExists(accounts)) {
+            option = menu(MenuOptionsTypeEnum.MANAGEMENT_REPORTS);
+            switch (option) {
+                case 1:
+                    getNegativeBalanceAccounts(accounts);
+                    break;
+                case 2: 
+                    getAccountsByBalance(accounts);
+                    break;
+                case 3:
+                    getAccountsByType(accounts);
+                    break;
+                case 4:
+                    getAccountOperation(accounts);
+                    break;
+            }
+        } else {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
         }
     }
     
@@ -237,10 +261,24 @@ public final class Main {
                 Util.showMessage(MessageTypesEnum.OUT, account.toString());
             }
         }
-        Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_PF);
+        
+        Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_PJ);
         for (Account account : accounts) {
             if (account instanceof AccountPJ) {
                 Util.showMessage(MessageTypesEnum.OUT, account.toString());
+            }
+        }
+    }
+    
+    private static void getAccountOperation(ArrayList<Account> accounts) {
+        int accountNumber;
+        
+        accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
+        for (Account account : accounts) {
+            if (account.getAccountNumber() == accountNumber) {
+                for (Operation operation : account.getOperations()) {
+                    Util.showMessage(MessageTypesEnum.OUT, operation.toString());
+                }
             }
         }
     }

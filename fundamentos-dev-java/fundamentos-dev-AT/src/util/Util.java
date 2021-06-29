@@ -3,13 +3,26 @@ package util;
 import constants.Constants;
 import enums.MessageTypesEnum;
 import enums.OperationTypeEnum;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import main.Account;
 import validation.DataValidation;
 
 public final class Util {
+    public static String getDate() {
+        String formattedDate;
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
+        Date date = calendar.getTime();
+        
+        formattedDate = simpleDateFormat.format(date);
+        return formattedDate; 
+    }
+    
     public static OperationTypeEnum getOperationType() {
         int option;
         OperationTypeEnum type = null;

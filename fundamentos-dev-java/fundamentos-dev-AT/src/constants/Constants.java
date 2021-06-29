@@ -6,6 +6,10 @@ public final class Constants {
     public static final String ACCOUNTS_FILE_NAME = "accounts.txt";
     public static final String OPERATIONS_FILE_NAME = "operations.txt";
     
+    // Operation types
+    public static final String CREDIT = "Crédito";
+    public static final String DEBIT = "Débito";
+    
     // Input Messages
     public static final String ENTER_YOUR_ACCOUNT_BALANCE = "Entre com o saldo da conta: ";
     public static final String ENTER_YOUR_ACCOUNT_NUMBER = "Entre com o número da conta: ";
@@ -37,6 +41,8 @@ public final class Constants {
     public static final String INVALID_DATA = "Erro: dado inválido!";
     public static final String INVALID_BALANCE = "Erro: saldo precisa ser maior ou igual a 0";
     public static final String INVALID_NUMBER = "Erro: número precisa ser um inteiro";
+    public static final String INVALID_DEBIT_OPERATION = "Débito inválido, a conta não possui saldo";
+    public static final String INVALID_DEBIT_OPERATION_SPECIAL_CHECK = "Débito inválido, a conta não possui saldo";
     public static final String ACCOUNT_ALREADY_EXISTS = "Erro: conta já existe";
     public static final String ACCOUNT_NOT_FOUND = "Nenhuma conta encontrada";
     public static final String ACCOUNT_CANNOT_REMOVED = "Conta não pode ser removida";

@@ -6,6 +6,8 @@ public class Operation {
     private String operationDate;
     private double value;
 
+    public Operation() {}
+    
     public Operation(int accountNumber, String type, String operationDate, double value) {
         this.accountNumber = accountNumber;
         this.type = type;

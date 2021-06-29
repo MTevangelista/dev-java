@@ -17,12 +17,22 @@ public final class DataValidation {
         String[] splittedName = name.split(" ");
         return splittedName.length >= 2;
     }
-    
-    /**
-     * Fields and methods to match bytes, shorts, ints, and longs
-     */
+
     public static boolean isPositiveNumber(double number) {
         return number >= 0;
+    }
+    
+    public static boolean accountHasBalance(Account account) {
+        return account.getAccountBalance() > 0;
+    }
+    
+    public static boolean accountExists(ArrayList<Account> accounts) {
+        boolean hasAccount = false;
+        
+        if (accounts.size() > 0) {
+            hasAccount = true;
+        }
+        return hasAccount;
     }
     
     public static boolean hasRepeatedAccount(int accountNumber, ArrayList<Account> accounts) {
@@ -35,6 +45,15 @@ public final class DataValidation {
             }
         }
         return hasAccount;
+    }
+    
+    public static boolean canDebitBeDone(double specialCheck, double operationValue) {
+        boolean canDebit = false;
+        
+//        if (()) {
+//            canDebit = true;
+//        }
+        return canDebit;
     }
     
     public static boolean canRemoveAccount(int accountNumber, ArrayList<Account> accounts) {
