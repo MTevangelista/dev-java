@@ -33,20 +33,25 @@ public class FileManager {
         return scanner;
     }
     
-    public static ArrayList<Operation> readFileOperation(ArrayList<Operation> operations, Scanner scanner) {
+    public static void readFileOperation(ArrayList<Account> accounts, Scanner scanner) {
         String line;
         String[] fields;
         
         while (scanner.hasNext()) {
             line = scanner.nextLine();
             fields = line.split(";");
-            Operation operation = new Operation(Integer.parseInt(fields[0]), fields[1], fields[2], Double.parseDouble(fields[3]));
-            operations.add(operation);
+            for (Account account : accounts) {
+                if (fields[0].equals(String.valueOf(account.getAccountNumber()))) {
+                    Operation operation = new Operation(fields[1], fields[2], Double.parseDouble(fields[3]));
+//                    operations.add(operation);
+                    account.getOperations().add(operation);
+                }
+            }
         }
-        return operations;
+//        return accounts;
     }
     
-    public static void readFile(Scanner accountsScanner, ArrayList<Account> accounts, ArrayList<Operation> operations, Scanner operationsScanner) {
+    public static void readFile(ArrayList<Account> accounts, Scanner accountsScanner, Scanner operationsScanner) {
         String line;
         String[] fields;
         
@@ -61,21 +66,22 @@ public class FileManager {
                 accounts.add(accountPJ);
             }
         }
-        joinFiles(accounts, operations, operationsScanner);
+        readFileOperation(accounts, operationsScanner);
+//        joinFiles(accounts, operationsScanner);
     }
     
-    private static void joinFiles(ArrayList<Account> accounts, ArrayList<Operation> operations, Scanner operationsScanner) {
-        operations = readFileOperation(operations, operationsScanner);
-        if (operations != null) {
-            for (Account account : accounts) {
-                for (Operation operation : operations) {
-                    if (account.getAccountNumber() == operation.getAccountNumber()) {
-                        account.getOperations().add(operation);
-                    }
-                }
-            }
-        }
-    }
+//    private static void joinFiles(ArrayList<Account> accounts, Scanner operationsScanner) {
+//        ArrayList<Account> operations = new ArrayList();
+//                
+//        operations = readFileOperation(accounts, operationsScanner);
+//        if (operations != null) {
+//            for (Account account : accounts) {
+//                for (Operation operation : operations) {
+//                    account.getOperations().add(operation);
+//                }
+//            }
+//        }
+//    }
     
     public static Formatter openTheRecording(String fileName) {
         Formatter exit = null;
@@ -98,9 +104,11 @@ public class FileManager {
         }
     }
     
-    public static void saveOperation(Formatter exit, ArrayList<Operation> operations) {
-        for (Operation operation : operations) {
-            exit.format("%s;%s;%s;%s\n", operation.getAccountNumber(), operation.getType(), operation.getOperationDate(), operation.getValue());
+    public static void saveOperation(Formatter exit, ArrayList<Account> accounts) {
+        for (Account account : accounts) {
+            for (Operation operation : account.getOperations()) {
+                exit.format("%s;%s;%s;%s\n", account.getAccountNumber(), operation.getType(), operation.getOperationDate(), operation.getValue());
+            }
         }
     }
 

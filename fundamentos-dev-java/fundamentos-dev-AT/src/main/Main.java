@@ -15,20 +15,18 @@ public final class Main {
         final int END = 5;
         int option;
         ArrayList<Account> accounts = new ArrayList();
-        ArrayList<Operation> operations = new ArrayList<>();
         
-        setUpFile(accounts, operations);
+        setUpFile(accounts);
         option = menu(MenuOptionsTypeEnum.USER_OPTIONS);
         while (option != END) {
-            start(option, accounts, operations);
+            start(option, accounts);
             Util.showMessage(MessageTypesEnum.OUT, Constants.EMPTY_MESSAGE);
             option = menu(MenuOptionsTypeEnum.USER_OPTIONS);
         }
         updateAccountsFile(accounts);
-        updateOperationsFile(operations);
     }
     
-    private static void setUpFile(ArrayList<Account> accounts, ArrayList<Operation> operations) {
+    private static void setUpFile(ArrayList<Account> accounts) {
         Scanner accountsScanner;
         Scanner operationsScanner;
         
@@ -38,21 +36,19 @@ public final class Main {
             Util.showMessage(MessageTypesEnum.ERR, Constants.FILE_READ_ERROR);
             return;
         }
-        FileManager.readFile(accountsScanner, accounts, operations, operationsScanner);
+        FileManager.readFile(accounts, accountsScanner, operationsScanner);
         FileManager.CloseFile(accountsScanner);
         FileManager.CloseFile(operationsScanner);
     }
     
     private static void updateAccountsFile(ArrayList<Account> accounts) {
         Formatter exit = FileManager.openTheRecording(Constants.ACCOUNTS_FILE_NAME);
+        Formatter exit2 = FileManager.openTheRecording(Constants.OPERATIONS_FILE_NAME);
+        
         FileManager.saveAccount(exit, accounts);
+        FileManager.saveOperation(exit2, accounts);
         FileManager.CloseFile(exit);
-    }
-    
-    private static void updateOperationsFile(ArrayList<Operation> operations) {
-        Formatter exit = FileManager.openTheRecording(Constants.OPERATIONS_FILE_NAME);
-        FileManager.saveOperation(exit, operations);
-        FileManager.CloseFile(exit);
+        FileManager.CloseFile(exit2);
     }
 
     private static int menu(MenuOptionsTypeEnum optionsType) {
@@ -77,13 +73,13 @@ public final class Main {
         return option;
     }
     
-    private static void start(int option, ArrayList<Account> accounts, ArrayList<Operation> operations) {
+    private static void start(int option, ArrayList<Account> accounts) {
         switch (option) {
             case 1:
                 registerAccount(accounts);
                 break;
             case 2:
-                editAccount(accounts, operations);
+                editAccount(accounts);
                 break;
             case 3:
                 removeAccount(accounts);
@@ -143,7 +139,7 @@ public final class Main {
         Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
     }
     
-    private static void editAccount(ArrayList<Account> accounts, ArrayList<Operation> operations) {
+    private static void editAccount(ArrayList<Account> accounts) {
         int accountNumber;
         double operationValue = 0;
         OperationTypeEnum operationType;
@@ -160,7 +156,7 @@ public final class Main {
             case CREDIT:
                 operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
                 account.setAccountBalance(account.getAccountBalance() + operationValue);
-                setOperationData(accountNumber, Constants.CREDIT, operationValue, operations);
+                setOperationData(accountNumber, Constants.CREDIT, operationValue, accounts);
                 break;
             case DEBIT:
                 operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
@@ -170,27 +166,31 @@ public final class Main {
                         return;
                     }
                     account.setAccountBalance(account.getAccountBalance() - operationValue);
-                    setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
+                    setOperationData(accountNumber, Constants.DEBIT, operationValue, accounts);
                 } else {
                     if (!DataValidation.accountHasBalance(account)) {
                         Util.showMessage(MessageTypesEnum.OUT, Constants.INVALID_DEBIT_OPERATION);
                         return;
                     }
                     account.setAccountBalance(account.getAccountBalance() - operationValue);
-                    setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
+                    setOperationData(accountNumber, Constants.DEBIT, operationValue, accounts);
                 }
                 break;
         }
     }
     
-    private static void setOperationData(int accountNumber, String type, double operationValue, ArrayList<Operation> operations) {
+    private static void setOperationData(int accountNumber, String type, double operationValue, ArrayList<Account> accounts) {
         Operation operation = new Operation();
         
-        operation.setAccountNumber(accountNumber);
         operation.setOperationDate(Util.getDate());
         operation.setType(type);
         operation.setValue(operationValue);
-        operations.add(operation);    
+        
+        for (Account account : accounts) {
+            if (account.getAccountNumber() == accountNumber) {
+                account.getOperations().add(operation);
+            }
+        }
     }
     
     private static void removeAccount(ArrayList<Account> accounts) {

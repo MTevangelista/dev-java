@@ -1,26 +1,16 @@
 package main;
 
 public class Operation {
-    private int accountNumber;
     private String type;
     private String operationDate;
     private double value;
 
     public Operation() {}
     
-    public Operation(int accountNumber, String type, String operationDate, double value) {
-        this.accountNumber = accountNumber;
+    public Operation(String type, String operationDate, double value) {
         this.type = type;
         this.operationDate = operationDate;
         this.value = value;
-    }
-
-    public int getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(int accountNumber) {
-        this.accountNumber = accountNumber;
     }
 
     public String getType() {
@@ -50,7 +40,6 @@ public class Operation {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Número da conta: ").append(accountNumber).append("\n");
         sb.append("Tipo da operação: ").append(type).append("\n");;
         sb.append("Data da operação: ").append(operationDate).append("\n");
         sb.append("Valor: ").append(value).append("\n");;
