@@ -47,12 +47,12 @@ public final class DataValidation {
         return hasAccount;
     }
     
-    public static boolean canDebitBeDone(double specialCheck, double operationValue) {
+    public static boolean canDebitBeDone(double accountBalance, double specialCheck, double operationValue) {
         boolean canDebit = false;
         
-//        if (()) {
-//            canDebit = true;
-//        }
+        if (operationValue <= (specialCheck + accountBalance)) {
+            canDebit = true;
+        }
         return canDebit;
     }
     

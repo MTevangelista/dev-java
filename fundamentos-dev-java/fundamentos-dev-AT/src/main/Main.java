@@ -165,7 +165,7 @@ public final class Main {
                 case DEBIT:
                     operationValue = Util.readDoubleValue(Constants.ENTER_YOUR_OPERATION_VALUE);
                     if (account instanceof AccountPF) {
-                        if (DataValidation.canDebitBeDone(((AccountPF) account).getSpecialCheck(), operationValue)) {
+                        if (DataValidation.canDebitBeDone(account.getAccountBalance(), ((AccountPF) account).getSpecialCheck(), operationValue)) {
                             account.setAccountBalance(account.getAccountBalance() - operationValue);
                             setOperationData(accountNumber, Constants.DEBIT, operationValue, operations);
                         } else {
@@ -274,12 +274,17 @@ public final class Main {
         int accountNumber;
         
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
-        for (Account account : accounts) {
-            if (account.getAccountNumber() == accountNumber) {
-                for (Operation operation : account.getOperations()) {
-                    Util.showMessage(MessageTypesEnum.OUT, operation.toString());
+        if (DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
+            for (Account account : accounts) {
+                if (account.getAccountNumber() == accountNumber) {
+                    for (Operation operation : account.getOperations()) {
+                        Util.showMessage(MessageTypesEnum.OUT, operation.toString());
+                    }
                 }
             }
+        } else {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
         }
+        
     }
 }
