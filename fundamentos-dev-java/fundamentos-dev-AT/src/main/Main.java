@@ -105,10 +105,10 @@ public final class Main {
         accountType = menu(MenuOptionsTypeEnum.ACCOUNT_TYPES_MENU);
         switch (accountType) {
             case 1:
-                setAccountPFData(accounts);
+                setAccountPFData(accounts, accountNumber);
                 break;
             case 2: 
-                setAccountPJData(accounts);
+                setAccountPJData(accounts, accountNumber);
                 break;
             default:
                 Util.showMessage(MessageTypesEnum.ERR, Constants.INVALID_OPERATION);
@@ -116,10 +116,10 @@ public final class Main {
         }
     }
 
-    private static void setAccountPFData(ArrayList<Account> accounts) {
+    private static void setAccountPFData(ArrayList<Account> accounts, int accountNumber) {
         AccountPF accountPF = new AccountPF();
 
-        accountPF.setAccountNumber(Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER));
+        accountPF.setAccountNumber(accountNumber);
         accountPF.setName(Util.readName(Constants.ENTER_YOUR_ACCOUNT_HOLDER_NAME));
         accountPF.setCPF(String.valueOf(Util.readIntValue(Constants.ENTER_YOUR_CPF)));
         accountPF.setAccountBalance(Util.readDoubleValue(Constants.ENTER_YOUR_ACCOUNT_BALANCE));
@@ -128,10 +128,10 @@ public final class Main {
         Util.showMessage(MessageTypesEnum.OUT, Constants.ACCOUNT_REGISTER_SUCCESSFULLY);
     }
     
-    private static void setAccountPJData(ArrayList<Account> accounts) {
+    private static void setAccountPJData(ArrayList<Account> accounts, int accountNumber) {
         AccountPJ accountPJ = new AccountPJ();
 
-        accountPJ.setAccountNumber(Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER));
+        accountPJ.setAccountNumber(accountNumber);
         accountPJ.setName(Util.readName(Constants.ENTER_YOUR_COMPANY_NAME));
         accountPJ.setCNPJ(String.valueOf(Util.readIntValue(Constants.ENTER_YOUR_CNPJ)));
         accountPJ.setAccountBalance(Util.readDoubleValue(Constants.ENTER_YOUR_ACCOUNT_BALANCE));
@@ -145,6 +145,10 @@ public final class Main {
         OperationTypeEnum operationType;
         Account account;
         
+        if (!DataValidation.accountExists(accounts)) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.LIST_IS_EMPTY);
+            return;
+        }
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
         if (!DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
             Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);
@@ -197,6 +201,10 @@ public final class Main {
         int accountNumber;
         int accountIndex;
         
+        if (!DataValidation.accountExists(accounts)) {
+            Util.showMessage(MessageTypesEnum.ERR, Constants.LIST_IS_EMPTY);
+            return;
+        }
         accountNumber = Util.readIntValue(Constants.ENTER_YOUR_ACCOUNT_NUMBER);
         if (!DataValidation.hasRepeatedAccount(accountNumber, accounts)) {
             Util.showMessage(MessageTypesEnum.ERR, Constants.ACCOUNT_NOT_FOUND);

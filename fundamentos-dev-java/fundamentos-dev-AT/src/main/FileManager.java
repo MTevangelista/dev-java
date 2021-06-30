@@ -43,12 +43,10 @@ public class FileManager {
             for (Account account : accounts) {
                 if (fields[0].equals(String.valueOf(account.getAccountNumber()))) {
                     Operation operation = new Operation(fields[1], fields[2], Double.parseDouble(fields[3]));
-//                    operations.add(operation);
                     account.getOperations().add(operation);
                 }
             }
         }
-//        return accounts;
     }
     
     public static void readFile(ArrayList<Account> accounts, Scanner accountsScanner, Scanner operationsScanner) {
@@ -67,21 +65,7 @@ public class FileManager {
             }
         }
         readFileOperation(accounts, operationsScanner);
-//        joinFiles(accounts, operationsScanner);
     }
-    
-//    private static void joinFiles(ArrayList<Account> accounts, Scanner operationsScanner) {
-//        ArrayList<Account> operations = new ArrayList();
-//                
-//        operations = readFileOperation(accounts, operationsScanner);
-//        if (operations != null) {
-//            for (Account account : accounts) {
-//                for (Operation operation : operations) {
-//                    account.getOperations().add(operation);
-//                }
-//            }
-//        }
-//    }
     
     public static Formatter openTheRecording(String fileName) {
         Formatter exit = null;
