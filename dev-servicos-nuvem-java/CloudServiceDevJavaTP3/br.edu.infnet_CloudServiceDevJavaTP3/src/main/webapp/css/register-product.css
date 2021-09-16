@@ -1,0 +1,392 @@
+:root {
+    font-size: 60%;
+
+  --color-background: #F0F0F7;
+  --color-primary: #323266;
+  --color-primary-dark: #030c3b;
+  --color-primary-lighter: #5f5b94;
+  --color-primary-light: #3d3d87;  
+  --color-secundary: #04D361;
+  --color-secundary-dark: #04BF58;
+  --color-title-in-primary: #FFFFFF;
+  --color-text-in-primary: #fdf1ff;
+  --color-text-title: #32264D;
+  --color-text-complement: #9C98A6;
+  --color-text-base: #3f3753;
+  --color-line-in-white: #E6E6F0;
+  --color-input-background: #F8F8FC;
+  --color-button-text: #FFFFFF;
+  --color-box-base: #FFFFFF;
+  --color-box-footer: #FAFAFC;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    height: 100vh;
+}
+
+body {
+    background: var(--color-background);
+}
+
+#root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body,
+input,
+button,
+textarea {
+    font: 500 1.6rem Poppins;
+    color: var(--color-text-base);
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-primary);
+}
+
+.page-header .top-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 1rem 1rem;
+    box-shadow: 0 4px 4px 0 rgb(5, 13, 58);
+    color: var(--color-text-in-primary);
+    padding: 1.6rem 0;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.page-header .top-bar-container a {
+    height: 3.2rem;
+    transition: opacity 0.2s;
+}
+
+.page-header .top-bar-container a:hover {
+    opacity: 0.6;
+}
+
+.page-header .top-bar-container a img{
+    margin-left: 2rem;
+}
+
+.page-header .top-bar-container > img {
+    height: 1.6rem;
+    margin-right: 2rem;
+}
+
+.page-header .header-content {
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+    margin: 3.2rem auto;
+}
+
+.page-header .header-content strong {
+    font: 700 3.6rem Archivo;
+    line-height: 4.2rem;
+    color: var(--color-title-in-primary);
+}
+
+.page-header .header-content p {
+    max-width: 30rem;
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+    color: var(--color-text-in-primary);
+    margin-top: 2.4rem;
+}
+
+#page-place-form {
+    width: 100vw;
+    height: 100vh;
+}
+
+#page-place-form .page-header .header-content {
+    margin-bottom: 6.4rem;
+}
+
+#page-place-form main {
+    background-color: var(--color-box-base);
+    width: 100%;
+    max-width: 74rem;
+    border-radius: 0.8rem;
+    margin: -3.2rem auto 3.2rem;
+    padding-top: 6.4rem;
+    overflow: hidden;
+}
+
+#page-place-form main fieldset {
+    border: 0;
+    padding: 0 2.4rem;
+}
+
+#page-place-form main fieldset + fieldset {
+    margin-top: 6.4rem;
+}
+
+#page-place-form main fieldset legend {
+    font: 700 2.4rem Archivo;
+    color: var(--color-text-title);
+    margin-bottom: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--color-line-in-white);
+}
+
+#page-place-form main fieldset legend button {
+    background: none;
+    border: 0;
+    color: var(--color-primary);
+    font: 700 1.6rem Archivo;
+    cursor: pointer;
+    transition: color 0.2s;
+    outline: none;
+}
+
+#page-place-form main fieldset legend button:hover {
+    color: var(--color-primary-dark);
+}
+
+#page-place-form main fieldset .input-block + .textarea-block,
+#page-place-form main fieldset .select-block + .input-block  {
+    margin-top: 2.4rem;
+}
+
+#page-place-form main .schedule-item {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--color-line-in-white);
+    border-radius: 0.8rem;
+}
+
+#page-place-form main footer {
+    padding: 4rem 2.4rem;
+    background: var(--color-box-footer);
+    border-top: 1px solid var(--color-line-in-white);
+    margin-top: 6.4rem;
+}
+
+#page-place-form main footer p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    color: var(--color-text-complement);
+}
+
+#page-place-form main footer p img {
+    margin-right: 2rem;
+}
+
+#page-place-form main footer button {
+    width: 100%;
+    height: 5.6rem;
+    background: var(--color-secundary);
+    color: var(--color-button-text);
+    border: 0;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    font: 700 1.6rem Archivo;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    margin-top: 3.2rem;
+    outline: none;
+}
+
+#page-place-form main footer button:hover {
+    background: var(--color-secundary-dark);
+}
+
+.disabledCard {
+    pointer-events: none;
+    color: var(--color-text-complement) !important; 
+}
+
+.input-block {
+    position: relative;
+}
+
+.input-block + .input-block {
+    margin-top: 1.4rem;
+}
+
+.input-block label {
+    font-size: 1.4rem;
+}
+
+.input-block input {
+    width: 100%;
+    height: 5.4rem;
+    margin-top: 0.8rem;
+    border-radius: 0.8rem;
+    background: var(--color-input-background);
+    border: 1px solid var(--color-line-in-white);
+    outline: 0;
+    padding: 0 1.6rem;
+    font: 1.6rem Archivo;
+}
+
+.input-block:focus-within::after {
+    width: calc(100% - 3.2rem);
+    height: 2px;
+    content: '';
+    background: var(--color-primary-light);
+    position: absolute;
+    left: 1.6rem;
+    right: 1.6rem;
+    bottom: 0;
+}
+
+.select-block {
+    position: relative;
+    margin-top: 0.8rem;
+}
+
+.select-block + .select-block {
+    margin-top: 1.4rem;
+}
+
+.select-block label {
+    font-size: 1.4rem;
+}
+
+.select-block select {
+    width: 100%;
+    height: 5.4rem;
+    margin-top: 0.8rem;
+    border-radius: 0.8rem;
+    background: var(--color-input-background);
+    border: 1px solid var(--color-line-in-white);
+    outline: 0;
+    padding: 0 1.6rem;
+    font: 1.6rem Archivo;
+}
+
+.select-block:focus-within::after {
+    width: calc(100% - 3.2rem);
+    height: 2px;
+    content: '';
+    background: var(--color-primary-light);
+    position: absolute;
+    left: 1.6rem;
+    right: 1.6rem;
+    bottom: 0;
+}
+
+
+.textarea-block {
+    position: relative;
+}
+
+.textarea-block + .textarea-block {
+    margin-top: 1.4rem;
+}
+
+.textarea-block label {
+    font-size: 1.4rem;
+}
+
+.textarea-block textarea {
+    width: 100%;
+    height: 16rem;
+    min-height: 8rem;
+    margin-top: 0.8rem;
+    border-radius: 0.8rem;
+    background: var(--color-input-background);
+    border: 1px solid var(--color-line-in-white);
+    outline: 0;
+    resize: vertical;
+    padding: 1.2rem 1.6rem;
+    font: 1.6rem Archivo;
+}
+
+.textarea-block:focus-within::after {
+    width: calc(100% - 3.2rem);
+    height: 2px;
+    content: '';
+    background: var(--color-primary-light);
+    position: absolute;
+    left: 1.6rem;
+    right: 1.6rem;
+    bottom: 7px;
+}
+
+@media (min-width: 700px) {
+    .page-header {
+        height: 340px;
+    }
+
+    .page-header .top-bar-container {
+        max-width: 1100px;
+    }
+
+    .page-header .header-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        flex: 1;
+        max-width: 740px;
+        margin: 0 auto;
+        padding-bottom: 48px;
+    }
+
+    .page-header .header-content strong {
+        max-width: 350px;
+    }
+
+    #page-place-form {
+        max-width: 100vw;
+    }
+
+    #page-place-form .page-header .header-content {
+        margin-bottom: 0;
+    }
+
+    #page-place-form main fieldset {
+        padding: 0 6.4rem;
+    }
+
+    #page-place-form main .schedule-item {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        column-gap: 1.6rem;
+        margin-top: 1rem;
+    }
+
+    #page-place-form main .schedule-item .input-block {
+        margin-top: 0 !important;
+    }
+
+    #page-place-form main footer {
+        padding: 4.0rem 6.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #page-place-form main footer p {
+        justify-content: space-between;
+    }
+
+    #page-place-form main footer button {
+        width: 20rem;
+        margin-top: 0;
+    }
+} 
